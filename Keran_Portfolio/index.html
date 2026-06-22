@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keran Loretta Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Space Grotesk for Gen Z bold tech aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#0A0A0C',
+                            dark: '#121216',
+                            card: '#1C1C24',
+                            accent: '#8B5CF6', /* Cyber Purple */
+                            accentLight: '#A78BFA',
+                            teal: '#14B8A6',   /* AI/ML Teal */
+                            gray: '#94A3B8',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow': 'glow 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
+                            '50%': { opacity: 0.9, transform: 'scale(1.05)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0A0A0C;
+            font-family: 'Inter', sans-serif;
+            color: #F1F5F9;
+        }
+        /* Custom scrollbar matching dark mode */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1C1C24;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8B5CF6;
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+        .glass-card {
+            background: rgba(28, 28, 36, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.15);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden antialiased">
+
+    <!-- Global Full-Screen Overlay Menu (Now moved to body root to avoid parent stacking issues) -->
+    <div id="global-menu" class="hidden fixed inset-0 z-[999] bg-brand-black/98 backdrop-blur-xl flex flex-col justify-center items-center space-y-8 text-center transition-all duration-300">
+        <a href="#about" class="text-3xl font-display font-bold text-brand-gray hover:text-white transition-colors" onclick="toggleMenu()">About</a>
+        <a href="#projects" class="text-3xl font-display font-bold text-brand-gray hover:text-white transition-colors" onclick="toggleMenu()">Projects</a>
+        <a href="#rice-simulator" class="text-3xl font-display font-bold text-brand-teal hover:text-brand-teal transition-colors flex items-center justify-center gap-2" onclick="toggleMenu()">
+            <span class="w-2.5 h-2.5 rounded-full bg-brand-teal animate-ping"></span> PM Lab
+        </a>
+        <a href="#experience" class="text-3xl font-display font-bold text-brand-gray hover:text-white transition-colors" onclick="toggleMenu()">Experience</a>
+        <a href="#skills" class="text-3xl font-display font-bold text-brand-gray hover:text-white transition-colors" onclick="toggleMenu()">Skills</a>
+        <a href="#contact" class="px-8 py-3.5 rounded-2xl bg-brand-accent hover:bg-brand-accentLight text-white font-semibold text-lg transition-all" onclick="toggleMenu()">Get in Touch</a>
+    </div>
+
+    <!-- Sticky Glassmorphism Header (No top desktop links - Hamburger only) -->
+    <header class="sticky top-0 z-[100] w-full bg-brand-black/85 backdrop-blur-md border-b border-white/[0.05]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-accent to-brand-teal flex items-center justify-center font-display font-bold text-lg text-white shadow-lg shadow-brand-accent/20">
+                    KL
+                </div>
+            </div>
+            
+            <!-- Global Hamburger Navigation Trigger (Higher z-index layer than overlay background) -->
+            <button id="menu-toggle-btn" class="flex flex-col justify-center items-center w-11 h-11 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 focus:outline-none relative z-[1000] group transition-all" aria-label="Toggle Navigation Menu">
+                <div class="w-5 h-4 flex flex-col justify-between">
+                    <span id="hamburger-1" class="w-full h-0.5 bg-white transition-all duration-300 rounded origin-left"></span>
+                    <span id="hamburger-2" class="w-full h-0.5 bg-white transition-all duration-300 rounded"></span>
+                    <span id="hamburger-3" class="w-full h-0.5 bg-white transition-all duration-300 rounded origin-left"></span>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero / Intro Section with Centered Brand Header -->
+    <section id="about" class="relative py-16 lg:py-24 overflow-hidden flex flex-col items-center">
+        <!-- Background Ambient Glows -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-brand-accent/20 rounded-full filter blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-10 right-20 w-80 h-80 bg-brand-teal/15 rounded-full filter blur-3xl animate-pulse-slow"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center space-y-8 mb-16">
+            <!-- Centered Header Hub -->
+            <div class="space-y-4">
+                <h1 class="font-display text-5xl sm:text-7xl lg:text-8xl font-black leading-none tracking-tight">
+                    KERAN LORETTA
+                </h1>
+                
+                <!-- Brought Center Subtitle Pill -->
+                <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-brand-accent/10 to-brand-teal/10 border border-white/10 px-6 py-2 rounded-full text-sm sm:text-base font-bold tracking-widest uppercase text-brand-teal">
+                    <span class="w-2 h-2 rounded-full bg-brand-teal animate-pulse"></span>
+                    <span>Product / AI / ERP</span>
+                </div>
+            </div>
+
+            <p class="text-lg sm:text-xl text-brand-gray max-w-3xl mx-auto leading-relaxed">
+                Computer Science Graduate & Product Manager specializing in turning complex data and AI into user-centric products.
+Proven ability to bridge the gap between technical engineering and product strategy 
+
+            <div class="flex flex-wrap justify-center gap-4 pt-2">
+                <a href="#projects" class="px-8 py-4 rounded-xl bg-gradient-to-r from-brand-accent to-brand-accentLight hover:from-brand-accentLight hover:to-brand-accent text-white font-semibold flex items-center justify-center gap-2 shadow-lg shadow-brand-accent/20 transition-all duration-300 transform hover:-translate-y-1">
+                    Explore Projects <i class="fa-solid fa-arrow-right text-sm"></i>
+                </a>
+                <a href="#contact" class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300">
+                    Let's Chat
+                </a>
+            </div>
+        </div>
+
+        <!-- Secondary grid containing Profile Photo & Meta Console -->
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-white/10 bg-brand-card/30 shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- Left: Profile Photo Element with precise crop boundaries for Pen & iPad -->
+                    <div class="md:col-span-5 flex justify-center">
+                        <div class="relative group">
+                            <!-- High-contrast Neon glow outline -->
+                            <div class="absolute -inset-1 bg-gradient-to-tr from-brand-accent to-brand-teal rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+                            
+                            <!-- Main Photo Container - Cropped to focus on head down through hands, iPad, and pen while hiding ID card -->
+                            <div class="relative w-64 h-[21.5rem] rounded-2xl overflow-hidden border border-white/10 bg-brand-black">
+                                <img src="C:\Users\ELCOT\OneDrive\Keran_Portfolio\Gemini_Generated_Image_h5ya3mh5ya3mh5ya.png" 
+                                     alt="Keran Loretta Portrait" 
+                                     class="w-full h-full object-cover object-[50%_1%] scale-[1.08] group-hover:scale-[1.12] transition-all duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-brand-black/40 via-transparent to-transparent opacity-60"></div>
+                                <div class="absolute bottom-3 left-3 right-3 bg-brand-black/75 backdrop-blur-md border border-white/10 p-1.5 rounded-lg text-center">
+                                    <span class="text-[10px] font-mono text-brand-teal tracking-wider uppercase font-semibold">Verified Portfolio Identity</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Professional Meta Info (Stripped terminal tag) -->
+                    <div class="md:col-span-7 space-y-5">
+                        <div class="space-y-1">
+                            <p class="text-xs uppercase tracking-widest text-brand-gray font-semibold">Based In</p>
+                            <p class="text-base text-white flex items-center gap-2">
+                                <i class="fa-solid fa-location-dot text-brand-teal"></i> Coimbatore, Tamil Nadu, India
+                            </p>
+                        </div>
+
+                        <div class="space-y-1">
+                            <p class="text-xs uppercase tracking-widest text-brand-gray font-semibold">Education</p>
+                            <p class="text-base text-white">
+                                BE — Computer Science & Engineering
+                            </p>
+                            <p class="text-xs text-brand-teal font-medium">Sri Eshwar College of Engineering | CGPA: 8.5</p>
+                        </div>
+
+                        <div class="space-y-2">
+                            <p class="text-xs uppercase tracking-widest text-brand-gray font-semibold">Creds & Badges</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs px-2.5 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-300 rounded-lg flex items-center gap-1.5">
+                                    <i class="fa-solid fa-trophy text-[10px]"></i> Pendo PM AI
+                                </span>
+                                <span class="text-xs px-2.5 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 rounded-lg flex items-center gap-1.5">
+                                    <i class="fa-solid fa-cloud text-[10px]"></i> Oracle OCI Associate
+                                </span>
+                                <span class="text-xs px-2.5 py-1 bg-teal-500/10 border border-teal-500/30 text-teal-300 rounded-lg flex items-center gap-1.5">
+                                    <i class="fa-solid fa-chart-column text-[10px]"></i> Power BI Expert
+                                </span>
+                                <span class="text-xs px-2.5 py-1 bg-orange-500/10 border border-orange-500/30 text-orange-300 rounded-lg flex items-center gap-1.5">
+                                    <i class="fa-brands fa-figma text-[10px]"></i> Figma UI/UX
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/[0.08] flex gap-4">
+                            <a href="https://www.linkedin.com/in/keranlorettad7/" target="_blank" rel="noopener" class="flex-1 py-2 rounded-xl bg-white/5 border border-white/10 text-brand-gray hover:text-white hover:border-brand-accent hover:bg-brand-accent/10 transition-all text-center text-xs font-semibold flex items-center justify-center gap-1.5">
+                                <i class="fa-brands fa-linkedin text-sm"></i> LinkedIn
+                            </a>
+                            <a href="https://github.com/KeranLoretta" target="_blank" rel="noopener" class="flex-1 py-2 rounded-xl bg-white/5 border border-white/10 text-brand-gray hover:text-white hover:border-brand-teal hover:bg-brand-teal/10 transition-all text-center text-xs font-semibold flex items-center justify-center gap-1.5">
+                                <i class="fa-brands fa-github text-sm"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive PM Lab: RICE scoring Sandbox -->
+    <section id="rice-simulator" class="py-20 bg-brand-dark relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="text-brand-accent text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-brand-accent/10 rounded-full">Interactive Sandbox</span>
+                <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold">Interactive PM Workspace</h2>
+                <p class="text-brand-gray">
+                    Experience my decision-making workflow in action. Below is a live interactive calculator simulating my <span class="text-white font-medium">RICE Prioritization framework</span>. Modify metrics to prioritize roadmap features.
+                </p>
+            </div>
+
+            <!-- Dynamic Simulator Box -->
+            <div class="glass-card rounded-3xl p-6 sm:p-10 max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                    
+                    <!-- Left Column: Sliders and Input -->
+                    <div class="md:col-span-7 space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-display font-bold text-lg text-white">RICE Prioritization Tool</h3>
+                            <select id="preset-selector" onchange="loadPresetFeature()" class="bg-brand-black border border-white/15 rounded-lg px-3 py-1.5 text-xs text-brand-teal font-medium focus:outline-none focus:border-brand-teal">
+                                <option value="spend-lens">Feature: Expense Auto-Categorize (Spend Lens)</option>
+                                <option value="review-intel">Feature: Paytm Review Tagging Engine</option>
+                                <option value="erp-cypress">Feature: ERP AP/AR Test Automation</option>
+                            </select>
+                        </div>
+
+                        <!-- Slider: Reach -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-brand-gray font-medium uppercase tracking-wider">Reach (Users impacted / month)</span>
+                                <span class="text-brand-teal font-bold font-mono" id="val-reach">15,000</span>
+                            </div>
+                            <input type="range" id="input-reach" min="500" max="50000" step="500" value="15000" oninput="calculateRICE()" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-accent">
+                        </div>
+
+                        <!-- Slider: Impact -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-brand-gray font-medium uppercase tracking-wider">Impact (Conversion / Value upgrade)</span>
+                                <span class="text-purple-400 font-bold font-mono" id="val-impact">3 (High Impact)</span>
+                            </div>
+                            <input type="range" id="input-impact" min="0.25" max="3" step="0.25" value="3" oninput="calculateRICE()" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-accent">
+                        </div>
+
+                        <!-- Slider: Confidence -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-brand-gray font-medium uppercase tracking-wider">Confidence (Certainty score)</span>
+                                <span class="text-brand-teal font-bold font-mono" id="val-confidence">90%</span>
+                            </div>
+                            <input type="range" id="input-confidence" min="10" max="100" step="10" value="90" oninput="calculateRICE()" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-accent">
+                        </div>
+
+                        <!-- Slider: Effort -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-brand-gray font-medium uppercase tracking-wider">Effort (Person-months required)</span>
+                                <span class="text-red-400 font-bold font-mono" id="val-effort">2 PMs</span>
+                            </div>
+                            <input type="range" id="input-effort" min="0.5" max="12" step="0.5" value="2" oninput="calculateRICE()" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-brand-accent">
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Visual Result / Display -->
+                    <div class="md:col-span-5 flex flex-col justify-between p-6 rounded-2xl bg-brand-black/50 border border-white/5 relative overflow-hidden">
+                        <div class="space-y-4">
+                            <span class="text-[10px] tracking-wider uppercase text-brand-gray">Calculated Output Priority</span>
+                            <div class="space-y-1">
+                                <h4 class="text-xs text-brand-gray font-mono">RICE Roadmap Score</h4>
+                                <div class="text-5xl font-display font-extrabold text-white tracking-tight" id="rice-score-display">
+                                    20,250
+                                </div>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-brand-teal/10 border border-brand-teal/20 space-y-1">
+                                <span class="text-xs font-semibold text-brand-teal">Action Recommendation:</span>
+                                <p class="text-xs text-slate-300 leading-relaxed" id="pm-recommendation">
+                                    Highly competitive roadmap entry. Strong candidate for immediate sprint cycle grooming.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-white/5 flex items-center justify-between text-xs text-brand-gray">
+                            <span>Formula used:</span>
+                            <code class="text-brand-accent text-xs bg-white/5 px-2 py-0.5 rounded font-mono">(R * I * C) / E</code>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Grid Section -->
+    <section id="projects" class="py-20 lg:py-32 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div class="space-y-4">
+                    <span class="text-brand-teal text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-brand-teal/10 rounded-full">Core Portfolios</span>
+                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold">Featured Projects & Epics</h2>
+                    <p class="text-brand-gray max-w-xl">
+                        Translating deep market research and user intelligence into robust technical implementations and functional wireframes.
+                    </p>
+                </div>
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-2.5">
+                    <button onclick="filterProjects('all')" class="project-tab-btn active px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 bg-brand-accent text-white">All Work</button>
+                    <button onclick="filterProjects('ai')" class="project-tab-btn px-4 py-2 rounded-xl text-xs font-semibold text-brand-gray bg-white/5 border border-white/10 hover:border-brand-accent transition-all duration-300">AI / ML</button>
+                    <button onclick="filterProjects('product')" class="project-tab-btn px-4 py-2 rounded-xl text-xs font-semibold text-brand-gray bg-white/5 border border-white/10 hover:border-brand-accent transition-all duration-300">Product Management</button>
+                </div>
+            </div>
+
+            <!-- Projects Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+                
+                <!-- Project 1: Spend Lens -->
+                <div class="project-card-container glass-card rounded-3xl p-6 flex flex-col justify-between" data-category="product">
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-start">
+                            <span class="w-10 h-10 rounded-xl bg-brand-teal/15 flex items-center justify-center text-brand-teal">
+                                <i class="fa-solid fa-wallet text-lg"></i>
+                            </span>
+                            <span class="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase rounded-lg">
+                                CSCW 2024 Study Verified
+                            </span>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-display font-bold text-xl text-white">Spend Lens</h3>
+                            <p class="text-xs text-brand-teal font-medium tracking-wide">UPI Expense Intelligence Platform</p>
+                            <p class="text-sm text-brand-gray leading-relaxed">
+                                Identified a critical market gap (87.9% of users want automatic expense tracking but current UPI apps fail to deliver). Designed full PM lifecycle documentation from Working Backwards methodologies to structured Figma wireframes.
+                            </p>
+                        </div>
+                        <!-- Highlights Badge -->
+                        <div class="space-y-2 border-t border-white/5 pt-4">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-brand-gray">Validated Market Gap:</span>
+                                <span class="text-white font-semibold">87.9%</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-brand-gray">Key Artifacts:</span>
+                                <span class="text-brand-teal font-semibold">PRD, RICE, OKRs</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- View Artifacts CTA -->
+                    <button onclick="showProjectDetails('spendLens')" class="mt-6 w-full py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-white hover:bg-brand-accent hover:border-brand-accent transition-all duration-300 flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-circle-info"></i> PM Architecture Preview
+                    </button>
+                </div>
+
+                <!-- Project 2: FinTech AI Review Intelligence Dashboard -->
+                <div class="project-card-container glass-card rounded-3xl p-6 flex flex-col justify-between" data-category="ai">
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-start">
+                            <span class="w-10 h-10 rounded-xl bg-brand-accent/15 flex items-center justify-center text-brand-accent">
+                                <i class="fa-solid fa-chart-line text-lg"></i>
+                            </span>
+                            <span class="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-[10px] font-bold uppercase rounded-lg">
+                                LLM Classification
+                            </span>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-display font-bold text-xl text-white">Review Intelligence</h3>
+                            <p class="text-xs text-brand-accentLight font-medium tracking-wide">FinTech Competitor GAP Engine</p>
+                            <p class="text-sm text-brand-gray leading-relaxed">
+                                Extracted and LLM-classified 10,000+ customer reviews. Successfully mapped competitor feature gaps and trimmed human feedback analysis iterations drastically to improve core roadmap planning.
+                            </p>
+                        </div>
+                        <!-- Highlights Badge -->
+                        <div class="space-y-2 border-t border-white/5 pt-4">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-brand-gray">Manual Effort Cut:</span>
+                                <span class="text-white font-semibold">70% Reduced</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-brand-gray">Actionable Gaps:</span>
+                                <span class="text-brand-accentLight font-semibold">5 Competitive Features</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- View Artifacts CTA -->
+                    <button onclick="showProjectDetails('reviewIntel')" class="mt-6 w-full py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-white hover:bg-brand-accent hover:border-brand-accent transition-all duration-300 flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-circle-info"></i> Pipeline Insights
+                    </button>
+                </div>
+
+                <!-- Project 3: AI Feature Prioritization Engine -->
+                <div class="project-card-container glass-card rounded-3xl p-6 flex flex-col justify-between" data-category="ai">
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-start">
+                            <span class="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center text-amber-500">
+                                <i class="fa-solid fa-brain text-lg"></i>
+                            </span>
+                            <span class="px-3 py-1 bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[10px] font-bold uppercase rounded-lg">
+                                Market Research Sizing
+                            </span>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-display font-bold text-xl text-white">Prioritization Engine</h3>
+                            <p class="text-xs text-amber-300 font-medium tracking-wide">TAM/SAM/SOM Competitive Benchmark</p>
+                            <p class="text-sm text-brand-gray leading-relaxed">
+                                Engineered a RICE Scoring framework automated tool mapping tech behemoths (Amazon, Google, Zomato, Flipkart). Built to eliminate pipeline subjective bias by structuring complex product market sizing metrics.
+                            </p>
+                        </div>
+                        <!-- Highlights Badge -->
+                        <div class="space-y-2 border-t border-white/5 pt-4">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-brand-gray">Market Coverage:</span>
+                                <span class="text-white font-semibold">Amazon / Google / Zomato</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-brand-gray">Key Innovation:</span>
+                                <span class="text-amber-300 font-semibold">Objective Multi-benchmarking</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- View Artifacts CTA -->
+                    <button onclick="showProjectDetails('prioritizeEngine')" class="mt-6 w-full py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-white hover:bg-brand-accent hover:border-brand-accent transition-all duration-300 flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-circle-info"></i> Framework Blueprint
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Custom Interactive PM Overlay Dialog for Project Deep-dive (No Alerts!) -->
+        <div id="project-modal" class="hidden fixed inset-0 z-[1100] flex items-center justify-center px-4">
+            <div class="absolute inset-0 bg-brand-black/90 backdrop-blur-md" onclick="closeProjectModal()"></div>
+            <div class="glass-card rounded-3xl p-6 sm:p-8 w-full max-w-2xl relative z-10 max-h-[85vh] overflow-y-auto border border-white/15">
+                <button onclick="closeProjectModal()" class="absolute top-4 right-4 text-brand-gray hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div id="modal-content">
+                    <!-- Loaded via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Timeline Section -->
+    <section id="experience" class="py-20 bg-brand-dark/50 border-t border-white/[0.05] relative">
+        <div class="absolute top-1/2 left-0 w-96 h-96 bg-brand-accent/5 rounded-full filter blur-3xl"></div>
+        
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 space-y-4">
+                <span class="text-brand-teal text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-brand-teal/10 rounded-full">The Journey</span>
+                <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold">Experience & Leadership</h2>
+                <p class="text-brand-gray">Honest execution matrices across enterprise ERP deliveries and AI systems design.</p>
+            </div>
+
+            <!-- Experience Timeline -->
+            <div class="relative border-l border-white/10 ml-4 md:ml-32 pl-8 md:pl-12 space-y-12">
+                
+                <!-- Experience Item 1 -->
+                <div class="relative">
+                    <!-- Date pill for desktop aligned on left margin -->
+                    <div class="hidden md:block absolute -left-48 top-1.5 text-right w-36">
+                        <span class="text-sm font-semibold text-white">Nov 2025 - Apr 2026</span>
+                        <span class="block text-xs text-brand-teal uppercase mt-0.5">Kochi, Kerala</span>
+                    </div>
+                    <!-- Indicator Dot -->
+                    <span class="absolute -left-[41px] top-2.5 w-5 h-5 rounded-full bg-brand-black border-2 border-brand-teal flex items-center justify-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-teal"></span>
+                    </span>
+                    
+                    <div class="glass-card rounded-2xl p-6 space-y-4 bg-brand-card/30">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <h3 class="font-display font-bold text-xl text-white">Associate Product Consultant — ERP Delivery</h3>
+                                <p class="text-sm font-medium text-brand-teal">CloudVice, Kochi</p>
+                            </div>
+                            <span class="md:hidden text-xs bg-brand-teal/10 text-brand-teal px-2.5 py-1 rounded font-semibold self-start">
+                                Nov 2025 - Apr 2026
+                            </span>
+                        </div>
+                        <ul class="space-y-3.5 text-sm text-brand-gray">
+                            <li class="flex items-start gap-2.5">
+                                <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-teal flex-shrink-0"></span>
+                                <span>Successfully owned end-to-end delivery roadmap configurations for <strong class="text-white">Oracle ERP AP/AR modules</strong>; meticulously maintained zero critical post-release defects across 6 critical sprint cycles.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-teal flex-shrink-0"></span>
+                                <span>Engineered highly scalable Cypress/JavaScript automated scripting framework covering <strong class="text-white">80% of QA pipeline checks</strong>. Reclaimed 12+ manual hours of execution every sprint cycle, enabling dynamic release pacing.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Experience Item 2 -->
+                <div class="relative">
+                    <div class="hidden md:block absolute -left-48 top-1.5 text-right w-36">
+                        <span class="text-sm font-semibold text-white">Sep 2024 - Dec 2024</span>
+                        <span class="block text-xs text-brand-accent uppercase mt-0.5">Coimbatore, IN</span>
+                    </div>
+                    <span class="absolute -left-[41px] top-2.5 w-5 h-5 rounded-full bg-brand-black border-2 border-brand-accent flex items-center justify-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span>
+                    </span>
+                    
+                    <div class="glass-card rounded-2xl p-6 space-y-4 bg-brand-card/30">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <h3 class="font-display font-bold text-xl text-white">AIML Intern</h3>
+                                <p class="text-sm font-medium text-brand-accentLight">V3 Analytics, Coimbatore</p>
+                            </div>
+                            <span class="md:hidden text-xs bg-brand-accent/10 text-brand-accentLight px-2.5 py-1 rounded font-semibold self-start">
+                                Sep 2024 - Dec 2024
+                            </span>
+                        </div>
+                        <ul class="space-y-3.5 text-sm text-brand-gray">
+                            <li class="flex items-start gap-2.5">
+                                <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-accent flex-shrink-0"></span>
+                                <span>Architected an automated ML predictions pipeline utilizing <strong class="text-white">Python, Pandas, and Scikit-learn</strong> designed to forecast regional Air Quality Index (AQI) dynamics.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-accent flex-shrink-0"></span>
+                                <span>Achieved a verifiable prediction accuracy baseline of <strong class="text-white">85%+</strong>. Converted outcomes into a polished PM-ready product report summarizing engineering tradeoffs and core system design KPIs.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Experience Item 3 (Leadership) -->
+                <div class="relative">
+                    <div class="hidden md:block absolute -left-48 top-1.5 text-right w-36">
+                        <span class="text-sm font-semibold text-white">Nov 2022 - Apr 2026</span>
+                        <span class="block text-xs text-amber-400 uppercase mt-0.5">Leadership</span>
+                    </div>
+                    <span class="absolute -left-[41px] top-2.5 w-5 h-5 rounded-full bg-brand-black border-2 border-amber-400 flex items-center justify-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                    </span>
+                    
+                    <div class="glass-card rounded-2xl p-6 space-y-4 bg-brand-card/30">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <h3 class="font-display font-bold text-xl text-white">Campus Placement Coordinator</h3>
+                                <p class="text-sm font-medium text-amber-400">Sri Eshwar College of Engineering</p>
+                            </div>
+                            <span class="md:hidden text-xs bg-amber-400/10 text-amber-400 px-2.5 py-1 rounded font-semibold self-start">
+                                Nov 2022 - Apr 2026
+                            </span>
+                        </div>
+                        <ul class="space-y-3.5 text-sm text-brand-gray">
+                            <li class="flex items-start gap-2.5">
+                                <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                                <span>Directed complex campus recruitment workflows for <strong class="text-white">200+ engineering graduates</strong> across 30+ recruiting tech companies.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                                <span>Re-engineered candidate lifecycle management tools, accelerating HR screening turnaround workflows by <strong class="text-white">20%</strong> while streamlining multi-stakeholder feedback alignment.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Skills Section with interactive detail panels -->
+    <section id="skills" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 space-y-4">
+                <span class="text-brand-accent text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-brand-accent/10 rounded-full font-mono">Capabilities</span>
+                <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold">The Skills Matrix</h2>
+                <p class="text-brand-gray max-w-xl mx-auto">Categorized toolbox containing the methodologies, analytical libraries, and automation utilities I use.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Category 1: Product Strategy -->
+                <div class="glass-card rounded-2xl p-6 space-y-5">
+                    <div class="flex items-center space-x-3 text-brand-teal">
+                        <div class="w-8 h-8 rounded-lg bg-brand-teal/10 flex items-center justify-center">
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white">Product Management</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">PRD/BRD Writing</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Roadmap Planning</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">RICE & MoSCoW</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">UAT Testing</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">OKRs & KPIs</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">User Story Mapping</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">A/B Testing</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">MVP Scoping</span>
+                    </div>
+                </div>
+
+                <!-- Category 2: Data & AI -->
+                <div class="glass-card rounded-2xl p-6 space-y-5">
+                    <div class="flex items-center space-x-3 text-brand-accent">
+                        <div class="w-8 h-8 rounded-lg bg-brand-accent/10 flex items-center justify-center">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white">Data & Intelligence</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Python</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">SQL</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Pandas & Scikit-learn</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">LLM Workflows</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Prompt Engineering</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Power BI Analytics</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Predictive Pipelines</span>
+                    </div>
+                </div>
+
+                <!-- Category 3: Tooling Systems -->
+                <div class="glass-card rounded-2xl p-6 space-y-5">
+                    <div class="flex items-center space-x-3 text-amber-500">
+                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white">Product Tools</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Jira Software</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Figma Design</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Cypress Automations</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">JavaScript</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Oracle ERP</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">GitHub Copilot</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Google Analytics</span>
+                    </div>
+                </div>
+
+                <!-- Category 4: Operational Frameworks -->
+                <div class="glass-card rounded-2xl p-6 space-y-5">
+                    <div class="flex items-center space-x-3 text-emerald-400">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-400/10 flex items-center justify-center">
+                            <i class="fa-solid fa-arrows-spin"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white">Work Methodologies</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Agile / Scrum</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Sprint Execution</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Backlog Grooming</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Customer Discovery</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Market Sizing</span>
+                        <span class="text-xs bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-brand-gray hover:text-white">Metrics Optimization</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Direct Contact Actions / Contact Section -->
+    <section id="contact" class="py-20 bg-brand-dark/30 border-t border-white/[0.05] relative overflow-hidden">
+        <!-- Accent circles -->
+        <div class="absolute bottom-0 right-0 w-80 h-80 bg-brand-teal/5 rounded-full filter blur-3xl"></div>
+        
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Details -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div class="space-y-4">
+                        <span class="text-brand-teal text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-brand-teal/10 rounded-full">Available Now</span>
+                        <h2 class="font-display text-4xl font-bold">Let's craft the next roadmap</h2>
+                        <p class="text-brand-gray leading-relaxed text-sm">
+                            I am open to strategic AI, ML, and Product Management associate roles.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <a href="mailto:keranlorettad@gmail.com" class="flex items-center space-x-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-brand-accent transition-colors">
+                            <span class="w-12 h-12 rounded-xl bg-brand-accent/15 text-brand-accent flex items-center justify-center text-lg">
+                                <i class="fa-regular fa-envelope"></i>
+                            </span>
+                            <div>
+                                <p class="text-xs text-brand-gray uppercase tracking-widest font-mono">Direct Mail</p>
+                                <p class="text-white font-semibold">keranlorettad@gmail.com</p>
+                            </div>
+                        </a>
+
+                        <a href="tel:+916369376856" class="flex items-center space-x-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-brand-teal transition-colors">
+                            <span class="w-12 h-12 rounded-xl bg-brand-teal/15 text-brand-teal flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-phone"></i>
+                            </span>
+                            <div>
+                                <p class="text-xs text-brand-gray uppercase tracking-widest font-mono">Mobile Connect</p>
+                                <p class="text-white font-semibold">+91 6369376856</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Contact Messaging Hub -->
+                <div class="lg:col-span-7">
+                    <div class="glass-card rounded-3xl p-6 sm:p-8 bg-brand-card/40 relative">
+                        <!-- Custom Success Notification overlay (No alert triggers!) -->
+                        <div id="form-success" class="hidden absolute inset-0 bg-brand-black/95 rounded-3xl z-20 flex flex-col items-center justify-center text-center p-6 space-y-4">
+                            <div class="w-16 h-16 rounded-full bg-brand-teal/15 flex items-center justify-center text-brand-teal text-2xl">
+                                <i class="fa-solid fa-check-double animate-bounce"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-xl text-white">Roadmap Event Dispatched</h3>
+                            <p class="text-sm text-brand-gray max-w-sm">
+                                Your message has been routed directly to Keran's inbox pipeline. Rest assured, we prioritize responsive stakeholder syncs.
+                            </p>
+                            <button onclick="resetContactForm()" class="px-5 py-2 rounded-xl bg-white/10 border border-white/10 hover:border-brand-accent text-xs font-semibold">
+                                Send another payload
+                            </button>
+                        </div>
+
+                        <!-- Main Form Element -->
+                        <form id="contact-form" onsubmit="submitPortfolioForm(event)" class="space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="text-xs font-semibold text-brand-gray tracking-wider uppercase">Name</label>
+                                    <input type="text" required class="w-full bg-brand-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-accent transition-colors" placeholder="e.g. Recruiters / Leads">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-xs font-semibold text-brand-gray tracking-wider uppercase">Enterprise / Org</label>
+                                    <input type="text" class="w-full bg-brand-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-accent transition-colors" placeholder="e.g. Google / Amazon">
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="text-xs font-semibold text-brand-gray tracking-wider uppercase">Corporate Email</label>
+                                <input type="email" required class="w-full bg-brand-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-accent transition-colors" placeholder="name@company.com">
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="text-xs font-semibold text-brand-gray tracking-wider uppercase">Strategic Proposal / Msg</label>
+                                <textarea required rows="4" class="w-full bg-brand-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-accent transition-colors" placeholder="Tell me about your product opening or business initiatives..."></textarea>
+                            </div>
+
+                            <!-- Button Actions -->
+                            <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-accent to-brand-teal text-white font-semibold flex items-center justify-center gap-2 shadow-lg shadow-brand-accent/20 hover:shadow-brand-teal/20 transition-all duration-300 transform hover:-translate-y-0.5">
+                                Send Pipeline Request <i class="fa-solid fa-paper-plane text-xs"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="py-12 bg-brand-black border-t border-white/[0.05]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center font-display font-bold text-sm text-brand-accent">
+                    KL
+                </div>
+                <span class="text-xs text-brand-gray font-mono">Designed & Built by Keran Loretta &copy; 2026</span>
+            </div>
+
+            <!-- Social Links Quick list -->
+            <div class="flex items-center space-x-6 text-sm">
+                <a href="https://www.linkedin.com/in/keranlorettad7/" target="_blank" rel="noopener" class="text-brand-gray hover:text-white transition-colors">LinkedIn</a>
+                <a href="https://github.com/KeranLoretta" target="_blank" rel="noopener" class="text-brand-gray hover:text-white transition-colors">GitHub</a>
+                <a href="mailto:keranlorettad@gmail.com" class="text-brand-gray hover:text-white transition-colors">Email</a>
+                <a href="#about" class="text-brand-teal hover:underline transition-colors">Back to Top</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Workspace Mechanics & Model Logic JS Script -->
+    <script>
+        // Preset Feature metrics database
+        const presets = {
+            'spend-lens': {
+                reach: 42000,
+                impact: 3, // High
+                confidence: 90,
+                effort: 3.5
+            },
+            'review-intel': {
+                reach: 12500,
+                impact: 2, // Medium
+                confidence: 85,
+                effort: 1.5
+            },
+            'erp-cypress': {
+                reach: 8000,
+                impact: 2.5,
+                confidence: 95,
+                effort: 1.0
+            }
+        };
+
+        // Project detail matrices for overlay/modal preview
+        const projectData = {
+            spendLens: {
+                title: "Spend Lens — UPI Expense Intelligence",
+                category: "Product Management Framework",
+                metric: "87.9% UPI Tracking Disparity",
+                intro: "A rigorous validation pipeline showcasing standard Working Backwards discovery templates.",
+                details: `
+                    <div class="space-y-4 text-slate-300 text-sm">
+                        <p><strong>The Opportunity:</strong> Over 87.9% of modern mobile banking and UPI customers desire automated categorization models, but existing major UPI service apps consistently fail to offer clear spending insights (Validated by IIIT Delhi ACM CSCW 2024 studies).</p>
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/10 space-y-2">
+                            <h4 class="text-xs uppercase font-bold tracking-wider text-brand-teal">PM Documentation Deliverables:</h4>
+                            <ul class="list-disc pl-5 space-y-1.5 text-xs">
+                                <li>Customer Press Release (PR/FAQ Working Backwards approach)</li>
+                                <li>OKRs: Target &lt;0.5s ingestion and &gt;92% categorization metrics</li>
+                                <li>Wireframe blueprints designed for rapid single-click dashboard access</li>
+                                <li>Comprehensive user journeys and flow charting in Figma</li>
+                            </ul>
+                        </div>
+                        <p class="text-xs text-slate-400">Framework tools used: Figma wireframes, User Persona mapping, RICE prioritization schemas.</p>
+                    </div>
+                `
+            },
+            reviewIntel: {
+                title: "FinTech AI Review Intelligence Dashboard",
+                category: "Natural Language Processing (NLP)",
+                metric: "70% Manual Iterations reduction",
+                intro: "Enterprise classification systems built to optimize developer resource assignment matrices.",
+                details: `
+                    <div class="space-y-4 text-slate-300 text-sm">
+                        <p><strong>The Implementation:</strong> Engineered a python based reviews extractor designed to parse over 10,000+ app store comments and user reviews from competitor Paytm platforms.</p>
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/10 space-y-2">
+                            <h4 class="text-xs uppercase font-bold tracking-wider text-brand-accent">Machine Learning Metrics:</h4>
+                            <ul class="list-disc pl-5 space-y-1.5 text-xs">
+                                <li>Automated classification pipelines powered by pre-trained LLM prompts</li>
+                                <li>Competitor benchmarking that surfaced 5 actionable feature gaps</li>
+                                <li>Consolidated dashboard designs for engineering and feature prioritizations</li>
+                                <li>Direct priority exports targeting Jira backlog generation pipelines</li>
+                            </ul>
+                        </div>
+                        <p class="text-xs text-slate-400">Framework tools used: Python, Pandas, LLM Workflows, Prompt engineering libraries.</p>
+                    </div>
+                `
+            },
+            prioritizeEngine: {
+                title: "AI Feature Prioritization Engine",
+                category: "Decision Support System",
+                metric: "Automated Objective Prioritizations",
+                intro: "Eliminating subjective pipeline assumptions during roadmap design phases.",
+                details: `
+                    <div class="space-y-4 text-slate-300 text-sm">
+                        <p><strong>System Logic:</strong> Built a visual, logic-backed tool mapping the market share footprints (TAM, SAM, SOM) and feature cadences of tech flagships (Amazon, Google, Flipkart, Zomato).</p>
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/10 space-y-2">
+                            <h4 class="text-xs uppercase font-bold tracking-wider text-amber-500">System Architecture:</h4>
+                            <ul class="list-disc pl-5 space-y-1.5 text-xs">
+                                <li>Calculates dynamic RICE weightings using configurable slider models</li>
+                                <li>Standardized quantitative mapping for subjective feature parameters</li>
+                                <li>Dynamic visual representation matching target customer priorities</li>
+                                <li>Exportable PM-ready CSV roadmap priorities templates</li>
+                            </ul>
+                        </div>
+                        <p class="text-xs text-slate-400">Framework tools used: Excel engines, Power BI, Python mathematical modeling.</p>
+                    </div>
+                `
+            }
+        };
+
+        // Full Screen Overlay Navigation Controller
+        const menuToggleBtn = document.getElementById('menu-toggle-btn');
+        const globalMenu = document.getElementById('global-menu');
+        const h1 = document.getElementById('hamburger-1');
+        const h2 = document.getElementById('hamburger-2');
+        const h3 = document.getElementById('hamburger-3');
+
+        function toggleMenu() {
+            const isHidden = globalMenu.classList.contains('hidden');
+            if (isHidden) {
+                globalMenu.classList.remove('hidden');
+                globalMenu.classList.add('flex');
+                document.body.classList.add('overflow-hidden'); // Lock body scroll when navigation overlay is open
+                
+                // Transform Hamburger into X Close
+                h1.style.transform = 'rotate(45deg) translate(5px, 4px)';
+                h2.style.opacity = '0';
+                h3.style.transform = 'rotate(-45deg) translate(5px, -4px)';
+            } else {
+                globalMenu.classList.add('hidden');
+                globalMenu.classList.remove('flex');
+                document.body.classList.remove('overflow-hidden'); // Restore body scroll
+                
+                // Revert X to Hamburger
+                h1.style.transform = 'none';
+                h2.style.opacity = '1';
+                h3.style.transform = 'none';
+            }
+        }
+
+        menuToggleBtn.addEventListener('click', toggleMenu);
+
+        // Interactive RICE Calculator Logic
+        function calculateRICE() {
+            const reach = parseInt(document.getElementById('input-reach').value);
+            const impact = parseFloat(document.getElementById('input-impact').value);
+            const confidence = parseInt(document.getElementById('input-confidence').value) / 100;
+            const effort = parseFloat(document.getElementById('input-effort').value);
+
+            // Update visible numeric tags
+            document.getElementById('val-reach').innerText = reach.toLocaleString();
+            
+            let impactTxt = "Low";
+            if(impact >= 3) impactTxt = "3 (High)";
+            else if(impact >= 2) impactTxt = "2 (Medium)";
+            else if(impact >= 1) impactTxt = "1 (Low)";
+            else impactTxt = `${impact} (Minimal)`;
+            document.getElementById('val-impact').innerText = impactTxt;
+
+            document.getElementById('val-confidence').innerText = `${Math.round(confidence * 100)}%`;
+            document.getElementById('val-effort').innerText = `${effort} PM${effort > 1 ? 's' : ''}`;
+
+            // Formula: (R * I * C) / E
+            const calculatedScore = Math.round((reach * impact * confidence) / effort);
+            
+            // Render to DOM
+            document.getElementById('rice-score-display').innerText = calculatedScore.toLocaleString();
+
+            // Set dynamic PM recommendations based on scores
+            const recEl = document.getElementById('pm-recommendation');
+            if (calculatedScore >= 25000) {
+                recEl.innerHTML = "<span class='text-emerald-400 font-bold'>High Velocity Pick:</span> Massive user return on engineering effort. Recommend prioritizing in the immediate feature sprint.";
+            } else if (calculatedScore >= 10000) {
+                recEl.innerHTML = "<span class='text-brand-teal font-bold'>Healthy Feature candidate:</span> Solid validation and scale return. Best scheduled as medium priority roadmap target.";
+            } else {
+                recEl.innerHTML = "<span class='text-amber-400 font-bold'>Backlog/Monitor status:</span> Low immediate score return. Consider scope reductions or additional target exploration phases.";
+            }
+        }
+
+        function loadPresetFeature() {
+            const selector = document.getElementById('preset-selector');
+            const data = presets[selector.value];
+            if (!data) return;
+
+            document.getElementById('input-reach').value = data.reach;
+            document.getElementById('input-impact').value = data.impact;
+            document.getElementById('input-confidence').value = data.confidence;
+            document.getElementById('input-effort').value = data.effort;
+
+            calculateRICE();
+        }
+
+        // Project Filter Management
+        function filterProjects(cat) {
+            // Manage Active Filter Button Style
+            document.querySelectorAll('.project-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-accent', 'text-white');
+                btn.classList.add('bg-white/5', 'text-brand-gray', 'border', 'border-white/10');
+            });
+
+            // Set current target style
+            const activeBtn = event.currentTarget;
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-white/5', 'text-brand-gray', 'border', 'border-white/10');
+                activeBtn.classList.add('bg-brand-accent', 'text-white');
+            }
+
+            // Perform sorting
+            document.querySelectorAll('.project-card-container').forEach(card => {
+                const projectCat = card.getAttribute('data-category');
+                if (cat === 'all' || projectCat === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Modal triggers (Custom, self-contained implementation with zero alerts)
+        function showProjectDetails(key) {
+            const data = projectData[key];
+            if(!data) return;
+
+            const modal = document.getElementById('project-modal');
+            const content = document.getElementById('modal-content');
+
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <div>
+                        <span class="text-xs uppercase font-mono text-brand-teal tracking-widest">${data.category}</span>
+                        <h3 class="font-display font-bold text-2xl text-white mt-1">${data.title}</h3>
+                    </div>
+                    <div class="py-2.5 px-4 rounded-xl bg-brand-accent/10 border border-brand-accent/20 text-brand-accentLight text-sm font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-chart-bar"></i> Peak KPI Indicator: ${data.metric}
+                    </div>
+                    <p class="text-slate-200 text-sm leading-relaxed font-semibold">${data.intro}</p>
+                    <div class="border-t border-white/10 pt-4">
+                        ${data.details}
+                    </div>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('project-modal').classList.add('hidden');
+        }
+
+        // Interactive Connect Forms Simulation
+        function submitPortfolioForm(e) {
+            e.preventDefault();
+            // Simulate networking API delays with aesthetic timing loop
+            const form = document.getElementById('contact-form');
+            const successOverlay = document.getElementById('form-success');
+            
+            successOverlay.classList.remove('hidden');
+            form.reset();
+        }
+
+        function resetContactForm() {
+            document.getElementById('form-success').classList.add('hidden');
+        }
+
+        // Initialize state on render load
+        window.onload = function() {
+            calculateRICE();
+        }
+    </script>
+</body>
+</html>
